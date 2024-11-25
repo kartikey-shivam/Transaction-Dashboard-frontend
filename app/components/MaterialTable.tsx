@@ -52,7 +52,7 @@ const MaterialTable = ({total,handleInputChange, data,isDark }: {total?:number,h
         token = localStorage.getItem("token");
      }
      
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions/download-csv`, {
+      const response = await fetch(`https://transaction-dashboard-backend-production.up.railway.app/transactions/download-csv`, {
         method: 'POST',
         headers: {
           "Authorization": `Bearer ${token}`,

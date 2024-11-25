@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 
 export const cronJobStart = async (token: string) => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cron/start`, {
+    const res = await fetch(`https://transaction-dashboard-backend-production.up.railway.app/cron/start`, {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${token}`,
@@ -13,7 +13,7 @@ export const cronJobStart = async (token: string) => {
   };
   
   export const cronJobStop = async (token: string) => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cron/stop`, {
+    const res = await fetch(`https://transaction-dashboard-backend-production.up.railway.app/cron/stop`, {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${token}`,
@@ -24,7 +24,7 @@ export const cronJobStart = async (token: string) => {
     return data;
   };
   export const getCronJobStatus = async (token: string) => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cron/status`, {
+    const res = await fetch(`https://transaction-dashboard-backend-production.up.railway.app/cron/status`, {
       method: "GET",
       headers: {
         "Authorization": `Bearer ${token}`,

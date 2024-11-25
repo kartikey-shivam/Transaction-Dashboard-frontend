@@ -76,7 +76,7 @@ const TransactionFilter = ({filters,handleInputChange, setTransactions,setTotal 
      }
      
        const response = await fetch(
-         `${process.env.NEXT_PUBLIC_API_URL}/transactions/filter?${queryParams.toString()}`,
+         `https://transaction-dashboard-backend-production.up.railway.app/transactions/filter?${queryParams.toString()}`,
          {
            method: "GET",
            headers: {
