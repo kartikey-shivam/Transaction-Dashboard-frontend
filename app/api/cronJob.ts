@@ -36,7 +36,7 @@ export const cronJobStart = async (token: string) => {
   };
   let token:any;
   if (typeof window !== "undefined") {
-    const token = localStorage.getItem("token");
+     token = localStorage.getItem("token");
   }
   export const handleStart = async ()=>{
       try {
