@@ -1,5 +1,5 @@
 export const getTransactions = async (token: string) => {
-    const res = await fetch(`https://transaction-dashboard-backend-production.up.railway.app/transactions`, {
+    const res = await fetch(`https://transaction-dashboard-backend-production.up.railway.app/api/transactions`, {
       method: "GET",
       headers: {
         "Authorization": `Bearer ${token}`,
@@ -11,7 +11,7 @@ export const getTransactions = async (token: string) => {
   };
   
   export const getUser = async (token: string) => {
-    const res = await fetch(`https://transaction-dashboard-backend-production.up.railway.app/user/getUser`, {
+    const res = await fetch(`https://transaction-dashboard-backend-production.up.railway.app/api/user/getUser`, {
       method: "GET",
       headers: {
         "Authorization": `Bearer ${token}`,

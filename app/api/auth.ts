@@ -1,5 +1,5 @@
 export const login = async (email: string, password: string) => {
-    const res = await fetch(`https://transaction-dashboard-backend-production.up.railway.app/auth/login`, {
+    const res = await fetch(`https://transaction-dashboard-backend-production.up.railway.app/api/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -9,7 +9,7 @@ export const login = async (email: string, password: string) => {
   };
   
   export const register = async (username:string,email: string, password: string) => {
-    const res = await fetch(`https://transaction-dashboard-backend-production.up.railway.app/auth/register`, {
+    const res = await fetch(`https://transaction-dashboard-backend-production.up.railway.app/api/auth/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username,email, password }),
@@ -19,7 +19,7 @@ export const login = async (email: string, password: string) => {
   };
   
   export const verityToken = async (token:string)=>{
-          const res = await fetch(`https://transaction-dashboard-backend-production.up.railway.app/verify`, {
+          const res = await fetch(`https://transaction-dashboard-backend-production.up.railway.app/api/verify`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ token}),

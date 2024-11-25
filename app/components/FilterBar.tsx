@@ -76,7 +76,7 @@ const TransactionFilter = ({filters,handleInputChange, setTransactions,setTotal 
      }
      
        const response = await fetch(
-         `https://transaction-dashboard-backend-production.up.railway.app/transactions/filter?${queryParams.toString()}`,
+         `https://transaction-dashboard-backend-production.up.railway.app/api/transactions/filter?${queryParams.toString()}`,
          {
            method: "GET",
            headers: {
