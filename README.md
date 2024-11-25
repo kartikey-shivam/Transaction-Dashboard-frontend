@@ -39,7 +39,7 @@ Frontend deployed Link: [https://transaction-dashboard-frontend-beta.vercel.app/
 
 Backend deployed Link: [https://transaction-dashboard-backend-production.up.railway.app/](https://transaction-dashboard-backend-production.up.railway.app/)
 
-
+video demo - https://drive.google.com/file/d/1tMYw3eTrF_wp_QZ24fgAH8iEr3B2bw2u/view?usp=sharing
 
 Backend Repository Link: [https://github.com/kartikey-shivam/Transaction-Dashboard-frontend](https://github.com/kartikey-shivam/Transaction-Dashboard-frontend)
 
