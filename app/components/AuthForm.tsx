@@ -10,11 +10,13 @@ const AuthForm = ({ mode }: { mode: "login" | "register" }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
-
+  let token:any;
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("token");
+      if (typeof window !== "undefined") {
+        const token = localStorage.getItem("token");
+      }
 
         if (token) {
           const isVerified = await verityToken(token);
@@ -35,7 +37,9 @@ const AuthForm = ({ mode }: { mode: "login" | "register" }) => {
         response = await login(email, password);
 
         if (response?.success) {
-          localStorage.setItem("token", response.token);
+          if (typeof window !== "undefined") {
+            localStorage.setItem("token", response.token);
+          }
           router.push("/");
         } else {
           toast.error(response?.message || "Login failed. Please try again.");
@@ -52,6 +56,7 @@ const AuthForm = ({ mode }: { mode: "login" | "register" }) => {
       }
     } catch (error) {
       toast.error("An unexpected error occurred. Please try again.");
+      console.log(error)
     }
   };
 

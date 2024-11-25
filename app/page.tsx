@@ -3,13 +3,11 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Header from "./components/Header";
-import Footer from "./components/Footer";
 import Head from "next/head";
 import { getTransactions, getUser } from "./api/transaction";
 import TransactionFilter from "./components/FilterBar";
 import CrudModal from "./components/Modal";
-import Example from "./components/MaterialTable";
-import TotalBox from "./components/TotalBox";
+import MaterialTable from "./components/MaterialTable";
 import { verityToken } from "./api/auth";
 import { toast } from "react-toastify";
 import Spinner from "./components/Spinner";
@@ -40,39 +38,33 @@ const Home = () => {
     originDeviceData: "",        
     destinationDeviceData: "",   
     tags: "",                    
-    currency: "",                
-    country: "",                 
+    originCurrency: "",
+    destinationCurrency: "",
+    originCountry: "",
+    destinationCountry: "",
+    page:"",
+    limit:"",           
   });
+  let token:any;
+  if (typeof window !== "undefined") {
+     token = localStorage.getItem("token");
+  }
   
-
   const router = useRouter();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFilters({ ...filters, [name]: value });
   };
-
-  const clearAllFilters = () => {
-    setFilters({
-      transactionId:"",
-      originMinAmount: "",
-      originMaxAmount: "",
-      destMinAmount: "",
-      destMaxAmount: "",
-      startDate: "",
-      endDate: "",
-      description: "",
-      type: "",
-      transactionState: "",
-      originUserId: "",
-      destinationUserId: "",
-      originDeviceData: "",
-      destinationDeviceData: "",
-      tags: "",
-      currency: "",
-      country: "",
-    });
+  const handlePaginationChange = ({ pageIndex, pageSize }: { pageIndex: string; pageSize: string }) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      page: pageIndex + 1, 
+      limit: pageSize, 
+    }));
+  
   };
+ 
   
 
   const changeTheme = () => {
@@ -92,13 +84,13 @@ const Home = () => {
       setUser(userData.user);
     } catch (error) {
       toast.error("Failed to fetch data. Redirecting to login.");
+      console.log(error)
       router.push("/login");
     }
   };
   const verifyAndFetch = async () => {
     try {
-      const token = localStorage.getItem("token");
-      console.log(token)
+      
       if (!token) {
         toast.error("No token found. Redirecting to login.");
         router.push("/login");
@@ -117,6 +109,8 @@ const Home = () => {
       await fetchData(token);
     } catch (error) {
       toast.error("An error occurred. Redirecting to login.");
+      console.log(error)
+
       router.push("/login");
     } finally {
       setIsLoading(false);
@@ -156,11 +150,10 @@ const Home = () => {
     getStatus()
   }, [darkThemeEnabled]);
   const getStatus=async()=>{
-    const token = localStorage.getItem("token")
+  
     try {
       if(token){
         const res = await getCronJobStatus(token)
-        console.log(res)
         if(res.success){
           setStatus(res.status)
           toast.success(res.message)
@@ -173,6 +166,8 @@ const Home = () => {
       }
     } catch (error) {
         toast.error("Error Fetching Cron Job Status")
+      console.log(error)
+
     }
 }
   if (isLoading) {
@@ -183,9 +178,7 @@ const Home = () => {
     );
   }
 
-  function handleClearFilters(): void {
-    throw new Error("Function not implemented.");
-  }
+
 
   return (
     <>
@@ -198,7 +191,7 @@ const Home = () => {
         changeTheme={changeTheme}
         profileImage={'/user.png'}
         user={user}
-        status={status} setStatus={setStatus}
+         setStatus={setStatus}
       />}
 
       <div className="absolute top-0 left-0 right-0">
@@ -216,28 +209,29 @@ const Home = () => {
       </div>
 
       <main className="container mx-auto pt-24 relative z-40 px-4 md:px-0">
-      <section className="totals flex flex-col md:flex-row justify-between gap-4 my-8">
+        <div className="m-4">
+          <h1 className="text-4xl">Transaction Analytics</h1>
+          <p>Interactive transaction dashboard with advanced filters, dynamic visualizations, and actionable insights for tracking transaction trends, types, and statuses.</p>
+        </div>
+      {/* <section className="totals flex flex-col md:flex-row justify-between gap-4 my-8">
           {transactions && <TotalBox title="Overall Transaction" value={transactions.length}  />}
           <TotalBox title="Overall expenses" value={0} />
          
-        </section>
+        </section> */}
       <div className="glass-bg p-4">
-        <TransactionFilter filters={filters}  handleInputChange={handleInputChange} setTransactions={setTransactions} toggleModal={toggleModal} />
+        <TransactionFilter setTotal={setTotalTransaactions} filters={filters}  handleInputChange={handleInputChange} setTransactions={setTransactions} toggleModal={toggleModal} />
       </div>
         <div className="w-full mt-10 glass-bg">
-        {transactions && <Example data={transactions} isDark={darkThemeEnabled} />} 
+        {transactions && <MaterialTable total={totalTransaction} handleInputChange={handlePaginationChange} data={transactions} isDark={darkThemeEnabled} />} 
         </div>
     
-        <CrudModal handleClearFilter={handleClearFilters} filters={filters} handleInputChange={handleInputChange} isModalOpen={isModalOpen} toggleModal={toggleModal} />
+        <CrudModal filters={filters} setFilters={setFilters} handleInputChange={handleInputChange} isModalOpen={isModalOpen} toggleModal={toggleModal} />
    
-        <div className="flex flex-wrap justify-center lg:justify-start items-center gap-6 mt-8">
-          
-        </div>
-
+     
        
       </main>
 
-      <Footer />
+      {/* <Footer /> */}
     </div>}
     </>
     

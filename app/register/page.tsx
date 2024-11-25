@@ -1,6 +1,4 @@
 "use client"
-import { useState } from "react";
-import { useRouter } from "next/router";
 import AuthForm from "../components/AuthForm";
 
 const Register = () => {

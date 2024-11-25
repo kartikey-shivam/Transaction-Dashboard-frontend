@@ -1,6 +1,5 @@
 
 import Image from 'next/image'
-import { signOut } from 'next-auth/react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faArrowRightFromBracket,
@@ -15,7 +14,6 @@ interface HeaderProps {
   changeTheme: () => void
   profileImage: string
   user: User
-  status:boolean
   setStatus:any
 }
 interface User {
@@ -27,14 +25,16 @@ const Header: React.FC<HeaderProps> = ({
   changeTheme,
   profileImage,
   user,
-  status,setStatus
+  setStatus
 }) => {
   const [submenuVisible, setSubmenuVisible] = useState(false)
   const [isChecked, setIsChecked] = useState(false);
 
   const router = useRouter();
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("token");
+   }
     router.push("/login");
   };
   

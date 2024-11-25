@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
+import { Input, Select } from './InputComponent';
+import { TransactionState } from './Modal';
 interface Filters {
   transactionId: string;
   originMinAmount: string;
@@ -18,15 +20,19 @@ interface Filters {
   originDeviceData: string;
   destinationDeviceData: string;
   tags: string;
-  currency: string;
-  country: string;
+  originCurrency: string;
+  destinationCurrency: string;
+  originCountry: string;
+  destinationCountry: string;
+  page:string,
+  limit:string
+
 }
 
-const TransactionFilter = ({filters,handleInputChange, setTransactions ,toggleModal }: {filters:Filters,handleInputChange:any,setTransactions:any,toggleModal:any}) => {
+const TransactionFilter = ({filters,handleInputChange, setTransactions,setTotal ,toggleModal }: {filters:Filters,handleInputChange:any,setTransactions:any,setTotal:any,toggleModal:any}) => {
    const [debouncedFilters, setDebouncedFilters] = useState(filters);
 
    useEffect(() => {
-    console.log(filters)
      const handler = setTimeout(() => {
        setDebouncedFilters(filters); 
      }, 500); 
@@ -51,6 +57,12 @@ const TransactionFilter = ({filters,handleInputChange, setTransactions ,toggleMo
        if (debouncedFilters.destinationUserId) queryParams.append("destinationUserId", debouncedFilters.destinationUserId);
        if (debouncedFilters.originDeviceData) queryParams.append("originDeviceData", debouncedFilters.originDeviceData);
        if (debouncedFilters.destinationDeviceData) queryParams.append("destinationDeviceData", debouncedFilters.destinationDeviceData);
+       if (debouncedFilters.originCountry) queryParams.append("originCountry", debouncedFilters.originCountry);
+       if (debouncedFilters.destinationCountry) queryParams.append("destinationCountry", debouncedFilters.destinationCountry);
+       if (debouncedFilters.originCurrency) queryParams.append("originCurrency", debouncedFilters.originCurrency);
+       if (debouncedFilters.destinationCurrency) queryParams.append("destinationCurrency", debouncedFilters.destinationCurrency);
+       if (debouncedFilters.page) queryParams.append("page", debouncedFilters.page);
+       if (debouncedFilters.limit) queryParams.append("limit", debouncedFilters.limit);
  
        if (debouncedFilters.tags) {
          const tagsString = Array.isArray(debouncedFilters.tags)
@@ -58,23 +70,28 @@ const TransactionFilter = ({filters,handleInputChange, setTransactions ,toggleMo
            : debouncedFilters.tags;
          queryParams.append("tags", tagsString);
        }
-       console.log("42",debouncedFilters,queryParams)
+       let token:any;
+       if (typeof window !== "undefined") {
+        token = localStorage.getItem("token");
+     }
+     
        const response = await fetch(
          `${process.env.NEXT_PUBLIC_API_URL}/transactions/filter?${queryParams.toString()}`,
          {
            method: "GET",
            headers: {
              "Content-Type": "application/json",
-             Authorization: `Bearer ${localStorage.getItem("token")}`,
+             Authorization: `Bearer ${token}`,
            },
          }
        );
        
        const filteredTransactions = await response.json();
-       console.log(filteredTransactions,"55")
+       setTotal(filteredTransactions.total)
        setTransactions(filteredTransactions.transactions);
      } catch (error) {
        toast.error("Failed to fetch transactions. Please try again later.");
+       console.log(error)
      }
    };
  
@@ -82,46 +99,38 @@ const TransactionFilter = ({filters,handleInputChange, setTransactions ,toggleMo
      handleFilter();
    }, [debouncedFilters]);
   return (
-    <div>
-      <div className="flex justify-between">
+    <div className='flex flex-col spac-y-4 relative'>
+        <div className=''>Search Transaction By</div>
+      <div className="flex justify-between p-4">
       
+        <div className='flex space-x-4 w-full'>
+            <Input 
+              label="Transaction Id"
+              name="transactionId"
+              placeholder="TXN-xxxxxxxx"
+              onChange={handleInputChange}
+              value={filters.transactionId}
+            />
+            <Input 
+              label="Description"
+              name="description"
+              placeholder="lorem ipsum ..."
+              onChange={handleInputChange}
+              value={filters.description}
+            />
+             <Select
+                label="Transaction Status"
+                name="transactionState"
+                onChange={handleInputChange}
+                value={filters.transactionState}
+                options={Object.values(TransactionState)}
+              />
 
-        <div>
-          <label htmlFor="description" className="block mb-1 text-md font-medium text-gray-900 dark:text-white">
-            Description
-          </label>
-          <input
-            name="transactionId"
-            value={filters.transactionId}
-            onChange={handleInputChange}
-            id="description"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm
-             rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 px-2.5 
-              dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
-              dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Description"
-          />
         </div>
 
-        <div>
-          <label htmlFor="tags" className="block mb-1 text-md font-medium text-gray-900 dark:text-white">
-            Tags
-          </label>
-          <input
-            type="text"
-            name="tags"
-            value={filters.tags}
-            onChange={handleInputChange}
-            id="tags"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm 
-            rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 px-2.5 
-             dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
-             dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Tags"
-          />
-        </div>
+        
 
-        <div className="flex items-end">
+        <div className="flex items-end absolute top-0 right-0">
           <button
             type="submit"
             onClick={toggleModal}

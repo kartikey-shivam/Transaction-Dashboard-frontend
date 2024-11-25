@@ -34,12 +34,14 @@ export const cronJobStart = async (token: string) => {
     const data = await res.json();
     return data;
   };
-  const token = localStorage.getItem("token")
+  let token:any;
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("token");
+  }
   export const handleStart = async ()=>{
       try {
           if(token){
             const res = await cronJobStart(token)
-            console.log(res)
             if(res.success){
               toast.success(res.message)
             }else{
@@ -57,7 +59,6 @@ export const cronJobStart = async (token: string) => {
       try {
         if(token){
           const res = await cronJobStop(token)
-          console.log(res)
           if(res.success){
             toast.success(res.message)
           }else{

@@ -1,3 +1,9 @@
-{
-  "extends": ["next/core-web-vitals", "next/typescript"]
+ {
+  "extends": ["next/core-web-vitals", "next/typescript"],
+  "rules": {
+    // Customize your ESLint rules here
+    "@typescript-eslint/no-explicit-any": "error", // Disallow `any` types
+    "@typescript-eslint/explicit-module-boundary-types": "warn", // Warn if function/module boundaries lack type annotations
+    "react/no-unescaped-entities": "off", // Example: Turn off unescaped entity warnings for JSX
+  },
 }
