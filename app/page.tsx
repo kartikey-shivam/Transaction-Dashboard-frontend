@@ -20,7 +20,7 @@ const Home = () => {
   const [status,setStatus] = useState<boolean>(false);
   const [user, setUser] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [darkThemeEnabled, setDarkThemeEnabled] = useState(true);
+  const [darkThemeEnabled, setDarkThemeEnabled] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [filters, setFilters] = useState({
     transactionId:"",    
@@ -68,7 +68,7 @@ const Home = () => {
   
 
   const changeTheme = () => {
-    setDarkThemeEnabled(!darkThemeEnabled);
+    setDarkThemeEnabled(darkThemeEnabled);
   };
 
   const toggleModal = () => setIsModalOpen(!isModalOpen);

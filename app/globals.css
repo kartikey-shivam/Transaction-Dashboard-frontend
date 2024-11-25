@@ -134,54 +134,9 @@ input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-.MuiPaper-root {
-  background-color: transparent !important;
-  
-}
+/*  */
 
 
-.MuiBox-root{
-  background-color: transparent !important;
-  padding: 2px !important;
-  
-  /* color: white  !important; */
-}
-.MuiTableHead-root .MuiTableRow-root {
-  background-color: transparent !important;
-
-  
-}
-.MuiTableBody-root .MuiTableRow-root .MuiTableCell-root{
-  background-color: transparent !important;
-  
-}
-.css-11yrv3u-MuiTableRow-root{
-  background-color: transparent !important;
-}
-tr{
-  background-color: transparent !important;
-  border: none !important;
-
-}
-.css-ws909q-MuiTableRow-root{
-  background-color: transparent !important;
-  border: none !important;
-}
- tr.css-3obskg-MuiTableRow-root{
-  background-color: transparent !important;
-}
-tr.css-ws909q-MuiTableRow-root{
-  background-color: transparent !important;
-}
-
-ul.css-m9kink-MuiList-root-MuiMenu-list{
-  background-color: rgba(0, 0, 0,1) !important;
-  color: white !important;
-}
-up.css-1toxriw-MuiList-root-MuiMenu-list{
-  background-color: rgba(0, 0, 0,1) !important;
-
-}
 /* .th {
   padding: 0;
 }
